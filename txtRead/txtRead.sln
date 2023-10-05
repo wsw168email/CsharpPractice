@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "txtRead", "txtRead\txtRead.csproj", "{2AEE733B-F2AD-40F5-94CF-C5C43836D605}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2AEE733B-F2AD-40F5-94CF-C5C43836D605}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AEE733B-F2AD-40F5-94CF-C5C43836D605}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AEE733B-F2AD-40F5-94CF-C5C43836D605}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AEE733B-F2AD-40F5-94CF-C5C43836D605}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F6557C39-6168-42DA-ABDC-2F6F11AE2EE5}
+	EndGlobalSection
+EndGlobal

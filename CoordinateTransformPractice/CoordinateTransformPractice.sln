@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinateTransformPractice", "CoordinateTransformPractice\CoordinateTransformPractice.csproj", "{CAE7848B-0228-4E6E-AB51-0264843DF07E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinateTransformLibrary", "CoordinateTransformLibrary\CoordinateTransformLibrary.csproj", "{B6FED475-4289-4012-9895-B45079A1D1CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAE7848B-0228-4E6E-AB51-0264843DF07E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE7848B-0228-4E6E-AB51-0264843DF07E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE7848B-0228-4E6E-AB51-0264843DF07E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE7848B-0228-4E6E-AB51-0264843DF07E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6FED475-4289-4012-9895-B45079A1D1CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6FED475-4289-4012-9895-B45079A1D1CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6FED475-4289-4012-9895-B45079A1D1CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6FED475-4289-4012-9895-B45079A1D1CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6463A4D9-B9A7-4736-B6E5-68898EACCC15}
+	EndGlobalSection
+EndGlobal
