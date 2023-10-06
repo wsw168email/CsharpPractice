@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TCPClient", "TCPClient\TCPClient.csproj", "{53C05F52-193C-4134-970B-324789E6175C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TCPClient", "TCPClient\TCPClient.csproj", "{53C05F52-193C-4134-970B-324789E6175C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoordinateTransformLibrary", "CoordinateTransformLibrary\CoordinateTransformLibrary.csproj", "{D2337847-7E52-4E68-AA59-EA3B03E1A55B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NEMA0183DecodeLibrary", "NEMA0183DecodeLibrary\NEMA0183DecodeLibrary.csproj", "{17141F30-2B00-4099-AC82-83265DEF86A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{53C05F52-193C-4134-970B-324789E6175C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53C05F52-193C-4134-970B-324789E6175C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53C05F52-193C-4134-970B-324789E6175C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2337847-7E52-4E68-AA59-EA3B03E1A55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2337847-7E52-4E68-AA59-EA3B03E1A55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2337847-7E52-4E68-AA59-EA3B03E1A55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2337847-7E52-4E68-AA59-EA3B03E1A55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17141F30-2B00-4099-AC82-83265DEF86A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17141F30-2B00-4099-AC82-83265DEF86A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17141F30-2B00-4099-AC82-83265DEF86A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17141F30-2B00-4099-AC82-83265DEF86A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

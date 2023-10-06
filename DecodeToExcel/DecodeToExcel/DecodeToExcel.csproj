@@ -7,9 +7,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\CoordinateTransformLibrary\CoordinateTransformLibrary.csproj" />
-    <ProjectReference Include="..\NEMA0183DecodeLibrary\NEMA0183DecodeLibrary.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -14,7 +14,7 @@ try
     using TcpClient handler = await listener.AcceptTcpClientAsync();
     await using NetworkStream stream = handler.GetStream();
 
-    while (true) {
+    //while (true) {
         string s = "";
         try
         {
@@ -30,20 +30,19 @@ try
                 var dateTimeBytes = Encoding.ASCII.GetBytes(s);
                 await stream.WriteAsync(dateTimeBytes);
                 await stream.ReadAsync(buffer);
-
                 s = sr.ReadLine();
             }
 
-            //關閉檔案
-            //var EndTimeBytes = Encoding.ASCII.GetBytes("@");
-            //await stream.WriteAsync(EndTimeBytes);//告訴接收端可以結束了
-            sr.Close();
+        //關閉檔案
+        var EndTimeBytes = Encoding.ASCII.GetBytes("@");
+        await stream.WriteAsync(EndTimeBytes);//告訴接收端可以結束了
+        sr.Close();
         }
         catch (Exception e)
         {
             Console.WriteLine("Exception: " + e.Message);
         }
-    }
+    //}
    
 }
 finally

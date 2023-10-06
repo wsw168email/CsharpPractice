@@ -1,7 +1,10 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using NEMA0183DecodeLibrary;
+using System.IO;
 
+StreamWriter sw = new StreamWriter("E:\\Practice\\TCPClient\\Decode.txt");
 IPEndPoint ipEndPoint = new(IPAddress.Parse("127.0.0.1"),8080);
 
 using TcpClient client = new();
@@ -21,50 +24,24 @@ while (true)
     {
         datarecv += Convert.ToChar(message[i]);
     }
-
     if (datarecv == "@") 
     {
+        sw.Close();
         break;
     }
-
-    string degree = ""; //紀錄欄位數據
-    string[] resultsubs = datarecv.Split(','); //切割
-    for (int i = 0; i < 10; i++)
+    if (datarecv[0] == '$')
     {
-        switch (i)
+        int flag = 0;
+        while (flag != 1)
         {
-            case 0:
-                Console.WriteLine("" + resultsubs[i] + "Track Made Good and Ground Speed（VTG)");
-                break;
-            case 1:
-                degree = resultsubs[i];
-                break;
-            case 2:
-                Console.WriteLine("真北參照系運動角度:" + degree + "度");
-                break;
-            case 3:
-                degree = resultsubs[i];
-                break;
-            case 4:
-                Console.WriteLine("磁北參照系運動角度:" + degree + "度");
-                break;
-            case 5:
-                degree = resultsubs[i];
-                break;
-            case 6:
-                Console.WriteLine("水平運動速度:" + degree + "節");
-                break;
-            case 7:
-                degree = resultsubs[i];
-                break;
-            case 8:
-                Console.WriteLine("水平運動速度:" + degree + "km/h");
-                break;
-            case 9:
-                Console.WriteLine("校驗值:" + resultsubs[i]);
-                break;
+            flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(datarecv,sw);
         }
     }
+    else 
+    {
+        Console.WriteLine("Noise!");
+    }
+    
     await stream.WriteAsync(Encoding.ASCII.GetBytes("#")); //告訴發送端可以發送下一組數據
 }
 
