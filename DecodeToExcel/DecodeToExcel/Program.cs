@@ -8,7 +8,7 @@ try
     StreamWriter sw = new StreamWriter("E:\\Practice\\DecodeToExcel\\DecodeToExcel.csv");
     //Read the first line of text
     line = sr.ReadLine();
-    sw.WriteLine("Hour,Minute,Second,Lon,Lat");
+    sw.WriteLine("Hour,Minute,Second,Lon,Lat,Speed,SpeedDirection,HeadingDirection");
     //Continue to read until you reach end of file
     string[] time ;
     string hour = "";
@@ -16,13 +16,16 @@ try
     string second = "";
     string lat = "";
     string lon = "";
+    string speed = "";
+    string speedDirection = "";
+    string headingDirection = "";
     int found = 0;
     while (line != null)
     {
         if (line == "RMC")
         {
             line = sr.ReadLine();
-            time = line.Split('時','分','秒');
+            time = line.Split('時', '分', '秒');
             hour = time[0];
             minute = time[1];
             second = time[2];
@@ -34,7 +37,13 @@ try
             line = sr.ReadLine();
             found = line.IndexOf(":");
             lon = line.Substring(found + 1);
-            sw.WriteLine(hour + "," + minute + "," + second + "," + lon + "," + lat);
+            line = sr.ReadLine();
+            found = line.IndexOf(":");
+            speed = line.Substring(found + 1, 5);
+            line = sr.ReadLine();
+            found = line.IndexOf(":");
+            speedDirection = line.Substring(found + 1);
+            //sw.WriteLine(hour + "," + minute + "," + second + "," + lon + "," + lat);
         }
         else if (line == "GGA")
         {
@@ -52,9 +61,17 @@ try
             line = sr.ReadLine();
             found = line.IndexOf(":");
             lon = line.Substring(found + 1);
-            sw.WriteLine(hour + "," + minute + "," + second + "," + lon + "," + lat);
+            //sw.WriteLine(hour + "," + minute + "," + second + "," + lon + "," + lat);
         }
-        else 
+        else if (line == "HDT") 
+        {
+            line = sr.ReadLine();
+            found = line.IndexOf(":");
+            headingDirection = line.Substring(found + 1);
+            sw.WriteLine(hour + "," + minute + "," + second + "," + lon + "," + lat +"," +speed+","+speedDirection+","+headingDirection);
+
+        }
+        else
         {
             line = sr.ReadLine();
         }
