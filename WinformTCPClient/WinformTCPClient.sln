@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinformTCPClient", "WinformTCPClient\WinformTCPClient.csproj", "{05717B16-742B-4EB9-A859-FA1CF4ABEA48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinformTCPClient", "WinformTCPClient\WinformTCPClient.csproj", "{05717B16-742B-4EB9-A859-FA1CF4ABEA48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NEMA0183DecodeLibrary", "NEMA0183DecodeLibrary\NEMA0183DecodeLibrary.csproj", "{CBBCC585-A3CA-4450-8423-21922841FCCC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoordinateTransformLibrary", "CoordinateTransformLibrary\CoordinateTransformLibrary.csproj", "{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecodeToExcelLibrary", "DecodeToExcelLibrary\DecodeToExcelLibrary.csproj", "{8673221E-9AEF-46F9-AEB8-0E9DBA176563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{05717B16-742B-4EB9-A859-FA1CF4ABEA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05717B16-742B-4EB9-A859-FA1CF4ABEA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05717B16-742B-4EB9-A859-FA1CF4ABEA48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBBCC585-A3CA-4450-8423-21922841FCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBBCC585-A3CA-4450-8423-21922841FCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBBCC585-A3CA-4450-8423-21922841FCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBBCC585-A3CA-4450-8423-21922841FCCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8673221E-9AEF-46F9-AEB8-0E9DBA176563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8673221E-9AEF-46F9-AEB8-0E9DBA176563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8673221E-9AEF-46F9-AEB8-0E9DBA176563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8673221E-9AEF-46F9-AEB8-0E9DBA176563}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

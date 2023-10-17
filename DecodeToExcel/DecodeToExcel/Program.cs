@@ -79,13 +79,6 @@ try
     //close the file
     sr.Close();
     sw.Close();
-    double[] dataX = new double[] { 1, 2, 3, 4, 5 };
-    double[] dataY = new double[] { 1, 4, 9, 16, 25 };
-
-    var myPlot = new ScottPlot.Plot(400, 300);
-    myPlot.AddScatter(dataX, dataY);
-
-    myPlot.SaveFig("quickstart.png");
 }
 catch (Exception e)
 {
