@@ -9,20 +9,26 @@ namespace WinformTCPClient
 {
     public partial class Form1 : Form
     {
-
-
         public Form1()
         {
             InitializeComponent();
+            Form2 f = new Form2();
+            f.Visible = true;
+
         }
-        private async Task ClientA()
+        public static int drawFlag;
+        private void Client() 
+        {
+            GetData();
+        } 
+        private async Task GetData()
         {
             StreamWriter sw = new StreamWriter("E:\\Practice\\WinformTCPClient\\Decode.txt");
             IPEndPoint ipEndPoint = new(IPAddress.Parse("127.0.0.1"), 8080);
             using TcpClient client = new();
             await client.ConnectAsync(ipEndPoint);
             await using NetworkStream stream = client.GetStream();
-            ConnectShow.Invoke(() => ConnectShow.Text += ("Connection Success!\r\n"));
+            ConnectShow.Invoke(() => ConnectShow.Text = ("Connection Success!\r\n"));
             while (true)
             {
                 NetworkStream clientStream = client.GetStream();
@@ -49,17 +55,28 @@ namespace WinformTCPClient
                     while (flag != 1)
                     {
                         flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(receive, sw);
+                        Console.WriteLine("2");
                     }
                 }
-
+                if (NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag == 1 && NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag == 1)
+                {
+                    drawFlag = 1;
+                    while (drawFlag!=0) 
+                    {
+                        NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag = 0;
+                        NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag = 0;
+                    }
+                                  
+                }
                 await stream.WriteAsync(Encoding.ASCII.GetBytes("#")); //告訴發送端可以發送下一組數據
-
-
             }
+            stream.Close();
+            ConnectShow.Invoke(() => ConnectShow.Text = ("Connection Fail!\r\n"));
         }
         private void ConnectButton_Click(object sender, EventArgs e)
         {
-            ClientA();
+            var myTask = new Task(Client);   
+            myTask.Start();
         }
 
         private void DecodeButton_Click(object sender, EventArgs e)
@@ -73,5 +90,6 @@ namespace WinformTCPClient
         {
 
         }
+
     }
 }

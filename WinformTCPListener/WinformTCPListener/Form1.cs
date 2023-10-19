@@ -15,8 +15,6 @@ namespace WinformTCPListener
     {
         private TcpListener myListener;
         private TcpClient newClient;
-        public BinaryReader br;
-        public BinaryWriter bw;
 
         public Form1()
         {
@@ -51,7 +49,10 @@ namespace WinformTCPListener
             }
             var EndTimeBytes = Encoding.ASCII.GetBytes("@");
             await stream.WriteAsync(EndTimeBytes);//告訴接收端可以結束了
+            textBox1.Invoke(() => textBox1.Text += ("Stream Complete!\r\n"));
             sr.Close();
+            stream.Close();
+            ConnectionShow.Invoke(() => ConnectionShow.Text = ("Connection Fail!\r\n"));
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -61,7 +62,7 @@ namespace WinformTCPListener
 
         private void StopButton_Click(object sender, EventArgs e)
         {
-            myListener.Stop();
+            myListener.Stop();           
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)

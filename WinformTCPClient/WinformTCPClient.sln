@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NEMA0183DecodeLibrary", "NE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoordinateTransformLibrary", "CoordinateTransformLibrary\CoordinateTransformLibrary.csproj", "{860C1B38-6FA0-4E8E-AB9B-F1F79B6E1B36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DecodeToExcelLibrary", "DecodeToExcelLibrary\DecodeToExcelLibrary.csproj", "{8673221E-9AEF-46F9-AEB8-0E9DBA176563}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DecodeToExcelLibrary", "DecodeToExcelLibrary\DecodeToExcelLibrary.csproj", "{8673221E-9AEF-46F9-AEB8-0E9DBA176563}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
