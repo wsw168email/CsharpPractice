@@ -28,32 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            StartButton = new Button();
-            StopButton = new Button();
             textBox1 = new TextBox();
-            ConnectionShow = new Label();
             ConnectButton = new Button();
             SuspendLayout();
-            // 
-            // StartButton
-            // 
-            StartButton.Location = new Point(54, 179);
-            StartButton.Name = "StartButton";
-            StartButton.Size = new Size(150, 46);
-            StartButton.TabIndex = 0;
-            StartButton.Text = "Start";
-            StartButton.UseVisualStyleBackColor = true;
-            StartButton.Click += StartButton_Click;
-            // 
-            // StopButton
-            // 
-            StopButton.Location = new Point(54, 245);
-            StopButton.Name = "StopButton";
-            StopButton.Size = new Size(150, 46);
-            StopButton.TabIndex = 1;
-            StopButton.Text = "Stop";
-            StopButton.UseVisualStyleBackColor = true;
-            StopButton.Click += StopButton_Click;
             // 
             // textBox1
             // 
@@ -64,14 +41,6 @@
             textBox1.ScrollBars = ScrollBars.Vertical;
             textBox1.Size = new Size(1151, 1049);
             textBox1.TabIndex = 2;
-            // 
-            // ConnectionShow
-            // 
-            ConnectionShow.AutoSize = true;
-            ConnectionShow.Location = new Point(54, 354);
-            ConnectionShow.Name = "ConnectionShow";
-            ConnectionShow.Size = new Size(0, 30);
-            ConnectionShow.TabIndex = 3;
             // 
             // ConnectButton
             // 
@@ -89,10 +58,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1574, 1129);
             Controls.Add(ConnectButton);
-            Controls.Add(ConnectionShow);
             Controls.Add(textBox1);
-            Controls.Add(StopButton);
-            Controls.Add(StartButton);
             Name = "Form1";
             Text = "Form1";
             ResumeLayout(false);
@@ -100,11 +66,7 @@
         }
 
         #endregion
-
-        private Button StartButton;
-        private Button StopButton;
-        private TextBox textBox1;
-        private Label ConnectionShow;
         private Button ConnectButton;
+        public static TextBox textBox1;
     }
 }

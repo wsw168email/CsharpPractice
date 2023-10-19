@@ -31,8 +31,6 @@
             ConnectButton = new Button();
             textBox1 = new TextBox();
             ConnectShow = new Label();
-            DecodeButton = new Button();
-            AnalysisButton = new Button();
             SuspendLayout();
             // 
             // ConnectButton
@@ -63,33 +61,11 @@
             ConnectShow.Size = new Size(0, 30);
             ConnectShow.TabIndex = 3;
             // 
-            // DecodeButton
-            // 
-            DecodeButton.Location = new Point(44, 143);
-            DecodeButton.Name = "DecodeButton";
-            DecodeButton.Size = new Size(150, 46);
-            DecodeButton.TabIndex = 4;
-            DecodeButton.Text = "Decode";
-            DecodeButton.UseVisualStyleBackColor = true;
-            DecodeButton.Click += DecodeButton_Click;
-            // 
-            // AnalysisButton
-            // 
-            AnalysisButton.Location = new Point(44, 221);
-            AnalysisButton.Name = "AnalysisButton";
-            AnalysisButton.Size = new Size(150, 46);
-            AnalysisButton.TabIndex = 5;
-            AnalysisButton.Text = "Analysis";
-            AnalysisButton.UseVisualStyleBackColor = true;
-            AnalysisButton.Click += AnalysisButton_Click;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(14F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1574, 1129);
-            Controls.Add(AnalysisButton);
-            Controls.Add(DecodeButton);
             Controls.Add(ConnectShow);
             Controls.Add(textBox1);
             Controls.Add(ConnectButton);
@@ -102,9 +78,7 @@
         #endregion
 
         private Button ConnectButton;
-        private TextBox textBox1;
         private Label ConnectShow;
-        private Button DecodeButton;
-        private Button AnalysisButton;
+        public static TextBox textBox1;
     }
 }
