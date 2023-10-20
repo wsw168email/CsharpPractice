@@ -20,8 +20,9 @@ namespace WinformTCPListener
         }
         public async Task SendData()
         {
-            Server server1 = new Server("127.0.0.1", new int[] { 8080, 8081, 8082 });
-            await server1.StartAsync();
+            //8080 for MainShip, 8081 for OBSGL
+            Server server = new Server("127.0.0.1", new int[] { 8080,8081 });
+            await server.StartAsync();
         }
        
         private void ConnectButton_Click(object sender, EventArgs e)

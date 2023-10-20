@@ -50,15 +50,15 @@ namespace WinformTCPClient
         public static float[][] sDirection(float x, float y, float speedDirection)
         {
             float[][] resultoutput = MatrixCreate(1, 2);
-            resultoutput[0][0] = x + (float)(0.005 * Math.Cos((-1f * (speedDirection / 365.0) * 2 * Math.PI) + 0.5 * Math.PI));
-            resultoutput[0][1] = y + (float)(0.005 * Math.Sin((-1f * (speedDirection / 365.0) * 2 * Math.PI) + 0.5 * Math.PI));
+            resultoutput[0][0] = x + (float)(0.005 * Math.Cos((speedDirection / 365.0) * 2 * Math.PI));
+            resultoutput[0][1] = y + (float)(0.005 * Math.Sin((speedDirection / 365.0) * 2 * Math.PI));
             return resultoutput;
         }
         public static float[][] hDirection(float x, float y, float headingDirection)
         {
             float[][] resultoutput = MatrixCreate(1, 2);
-            resultoutput[0][0] = x + (float)(0.005 * Math.Cos((-1f * (headingDirection / 365.0) * 2 * Math.PI) + 0.5 * Math.PI));
-            resultoutput[0][1] = y + (float)(0.005 * Math.Sin((-1f * (headingDirection / 365.0) * 2 * Math.PI) + 0.5 * Math.PI));
+            resultoutput[0][0] = x + (float)(0.005 * Math.Cos(((headingDirection / 365.0) * 2 * Math.PI)));
+            resultoutput[0][1] = y + (float)(0.005 * Math.Sin(((headingDirection / 365.0) * 2 * Math.PI)));
             return resultoutput;
         }
         public static void LabelChange(double xbase, double ybase,float xminnow, float xmaxnow, float yminnow, float ymaxnow, float speedDirection, float headingDirection, float speed)
@@ -104,8 +104,18 @@ namespace WinformTCPClient
             Form2.labelY8.Text = xychange.ToString("0.000");
             xychange = ybase + (ymaxnow - yminnow) * 0.9 + yminnow;
             Form2.labelY9.Text = xychange.ToString("0.000");
-            Form2.SDirectionShow.Text = ("速度方向" + speedDirection + "度");
-            Form2.HDirectionShow.Text = ("船首方向" + headingDirection + "度");
+            xychange = speedDirection * (-1) + 90;
+            if (xychange<0) 
+            {
+                xychange += 360;
+            }
+            Form2.SDirectionShow.Text = ("速度方向" + xychange.ToString("0.00") + "度");
+            xychange = headingDirection * (-1) + 90;
+            if (xychange < 0)
+            {
+                xychange += 360;
+            }
+            Form2.HDirectionShow.Text = ("船首方向" + xychange.ToString("0.00") + "度");
             Form2.SpeedShow.Text = ("速度" + speed + "節");
         }
     }

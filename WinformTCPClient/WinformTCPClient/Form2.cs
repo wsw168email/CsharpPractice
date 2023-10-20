@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NEMA0183DecodeLibrary;
+using OBSGL_DecodeLibrary;
 using WinformTCPClient;
 
 namespace WinformTCPClient
@@ -15,9 +16,6 @@ namespace WinformTCPClient
     public partial class Form2 : Form
     {
 
-        int datacount = 0;
-        int timercount = 0;
-        int dataread = 0;
         //畫布畫筆相關參數開始
         Image _image = null;//用於存放繪圖內容的中間載體image
         Graphics _Graphics = null;//在image上繪圖的畫布，不可見        
@@ -27,8 +25,12 @@ namespace WinformTCPClient
         Image _imageDirection = null;
         Graphics _GraphicsDirection = null;
         Graphics grachicsDirection = null;
+        Image _imageSub = null;
+        Graphics _GraphicsSub = null;
+        Graphics grachicsSub = null;
         Pen Sdirectionpen = null;
         Pen Hdirectionpen = null;
+        Pen Subpen = null;
         //畫布畫筆相關參數結束
 
         //計算座標相關參數開始
@@ -78,27 +80,42 @@ namespace WinformTCPClient
         int reshapeflag = 0; //開始重新繪製縮放後的位置
         //Circle Stack相關參數設定結束
 
+        //障礙船資料儲存開始
+        List<OBSGL_Decode.ObjectionData> objDraw = new List<OBSGL_Decode.ObjectionData>();
+        float subxx;
+        float subyy;
+        float[][] subresult = DrawShip.MatrixCreate(1, 2);
+        float[][] subresultDirection = DrawShip.MatrixCreate(1, 2);
+        int subflag = 0;
+        //障礙船資料儲存結束
+
 
         public Form2()
         {
             InitializeComponent();
             DrawInitialize();
-            var dataReceive = new Task(DataReceive);
-            dataReceive.Start();
+            var MaindataReceive = new Task(MainDataReceive);
+            MaindataReceive.Start();
+            var SubdataReceive = new Task(SubDataReceive);
+            SubdataReceive.Start();
         }
         private void DrawInitialize()
         {
             _image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             _imageDirection = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            _imageSub = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             _Graphics = Graphics.FromImage(_image);//_Graphics是_image的畫布，將畫圖信息存在_image內
             _GraphicsDirection = Graphics.FromImage(_imageDirection);
+            _GraphicsSub = Graphics.FromImage(_imageSub);
             mypen = new Pen(Color.Red, 3);
             dotpen = new Pen(Color.Gray);//畫筆
+            Subpen = new Pen(Color.Orange, 3);
             dotpen.DashPattern = new float[] { 10.0F, 2.0F };
             Sdirectionpen = new Pen(Color.Blue, 3);
             Hdirectionpen = new Pen(Color.Green, 3);
             graphics = pictureBox1.CreateGraphics();//graphics為視窗畫布，用來顯示繪圖信息
             grachicsDirection = pictureBox1.CreateGraphics();
+            grachicsSub = pictureBox1.CreateGraphics();
             formHeight = pictureBox1.Height;
             formWidth = pictureBox1.Width;
             xminnow = xmin;
@@ -110,12 +127,13 @@ namespace WinformTCPClient
             ycenter = (ymax - ymin) * 0.5f + ymin;
             _Graphics.Clear(Color.White);
             _GraphicsDirection.Clear(Color.FromArgb(0, 255, 255, 255));
+            _GraphicsSub.Clear(Color.FromArgb(0, 255, 255, 255));
         }
-        public void DataReceive()
+        public void MainDataReceive()
         {
             while (true)
             {
-                if (Form1.drawFlag == 1)
+                if (Form1.MaindrawFlag == 1)
                 {
                     dataChange[endflag].lat = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.lat - xbase;
                     dataChange[endflag].lon = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.lon - ybase;
@@ -135,10 +153,26 @@ namespace WinformTCPClient
                     {
                         startflag = 0;
                     }
-                    Form1.drawFlag = 0;
+                    Form1.MaindrawFlag = 0;
                     shipflag = 1;
                 }
             }
+        }
+        private void SubDataReceive() 
+        {
+            while (true) 
+            {
+                if (Form1.SubdrawFlag == 1) 
+                {
+                    TransferALL(OBSGL_Decode.obj,objDraw);
+                    Form1.SubdrawFlag = 0;
+                    subflag = 1;
+                }
+            }
+        }
+        private void TransferALL(List<OBSGL_Decode.ObjectionData> fromList, List<OBSGL_Decode.ObjectionData> toList) 
+        {
+            toList.AddRange(fromList);
         }
         public void ShipGenerate()
         {
@@ -197,6 +231,25 @@ namespace WinformTCPClient
             }
             graphics.DrawImage(_image, new Point(0, 0));
         }
+        private void SubGenerate() 
+        {
+            if (subflag == 1) 
+            {
+                _GraphicsSub.Clear(Color.FromArgb(0, 255, 255, 255));
+                foreach (OBSGL_Decode.ObjectionData objectionData in objDraw)
+                {
+                    subxx = (float)(objectionData.xX + 177856.2331 - xbase);
+                    subyy = (float)(objectionData.yY + 2494369.982 - ybase);
+                    result = DrawShip.CT(subxx, subyy, xminnow, xmaxnow, yminnow, ymaxnow, formWidth, formHeight);
+                    subxx = result[0][0];
+                    subyy = result[0][1];
+                    _GraphicsSub.DrawEllipse(Subpen, subxx, subyy, 0.1f, 0.1f);
+                }
+                grachicsSub.DrawImage(_imageSub, new Point(0, 0));
+                subflag = 0;
+            }
+            
+        }
 
         private void ReceiveButton_Click(object sender, EventArgs e)
         {
@@ -207,6 +260,7 @@ namespace WinformTCPClient
         private void timer1_Tick(object sender, EventArgs e)
         {
             ShipGenerate();
+            SubGenerate();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
@@ -225,7 +279,6 @@ namespace WinformTCPClient
             timer1.Enabled = false;
             _Graphics.Clear(Color.White);
             graphics.Clear(Color.White);
-            timercount = 0;
             Form1 f = new Form1();
             this.Visible = false;
             f.Visible = true;

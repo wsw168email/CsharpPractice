@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DecodeToExcelLibrary\DecodeToExcelLibrary.csproj" />
     <ProjectReference Include="..\NEMA0183DecodeLibrary\NEMA0183DecodeLibrary.csproj" />
+    <ProjectReference Include="..\OBSGL_DecodeLibrary\OBSGL_DecodeLibrary.csproj" />
   </ItemGroup>
 
 </Project>

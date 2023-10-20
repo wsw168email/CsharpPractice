@@ -9,13 +9,13 @@ namespace WinformTCPClient
 {
     class Client
     {
-        private TcpClient _client;
         private string _serverIp;
         private int[] _serverPorts;
+        StreamWriter MainSW = new StreamWriter("E:\\Practice\\WinformTCPClient\\MainDecode.txt");
+        StreamWriter SubSW = new StreamWriter("E:\\Practice\\WinformTCPClient\\SubDecode.txt");
 
         public Client(string serverIp, int[] serverPorts)
         {
-            _client = new TcpClient();
             _serverIp = serverIp;
             _serverPorts = serverPorts;
         }
@@ -32,67 +32,87 @@ namespace WinformTCPClient
 
         public async Task ConnectAndCommunicateAsync(int port)
         {
-            while (true)
+            TcpClient client = new TcpClient();
+            try
             {
-                try
-                {
-                    await _client.ConnectAsync(_serverIp, port);
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text += $"Connected to server on port {port}...");
-                    break;
-                }
-                catch
-                {
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text += "Failed to connect to server. Retrying... \r\n");
-                    await Task.Delay(1000);
-                }
-            }
+                await client.ConnectAsync(_serverIp, port);
+                Form1.textBox1.Invoke(() => Form1.textBox1.Text += ($"Connected to server on port {port}... \r\n"));
 
-            NetworkStream stream = _client.GetStream();
-            byte[] buffer = new byte[1024];
-            StreamWriter sw = new StreamWriter("E:\\Practice\\WinformTCPClient\\Decode.txt");
-            while (true)
-            {
-                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
-                if (bytesRead == 0)
+                NetworkStream stream = client.GetStream();
+                byte[] buffer = new byte[1024];
+                while (true)
                 {
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text += "Server disconnected... \r\n");
-                    break;
-                }
-
-                string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
-                
-                if (response == "@")
-                {
-                    sw.Close();
+                    int bytesRead = await stream.ReadAsync(buffer);
+                    if (bytesRead == 0)
+                    {
+                        Form1.textBox1.Invoke(() => Form1.textBox1.Text += ($"Server on port {port} disconnected... \r\n"));
+                        break;
+                    }
+            
+                    string response = Encoding.ASCII.GetString(buffer, 0, bytesRead);
                     
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text = "");
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text += "Stream Complete!");
-                    break;
-                }
-                if (response[0] == '$')
-                {
-                    //Form1.textBox1.Invoke(() => Form1.textBox1.Text += (response + "\r\n"));
-                    int flag = 0;
-                    while (flag != 1)
+                    if (response == "@")
                     {
-                        flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(response, sw);
-                    }
-                }
-                if (NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag == 1 && NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag == 1)
-                {
-                    Form1.drawFlag = 1;
-                    while (Form1.drawFlag != 0)
-                    {
-                        NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag = 0;
-                        NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag = 0;
-                    }
+                        if (port == 8080)
+                        {
+                            MainSW.Close();
+                        }
+                        else 
+                        {
+                            SubSW.Close();
+                        }
 
+                        Form1.textBox1.Invoke(() => Form1.textBox1.Text = "");
+                        Form1.textBox1.Invoke(() => Form1.textBox1.Text += $"{port} Stream Complete! \r\n");
+                        break;
+                    }
+                    if (response[0] == '$')
+                    {
+                        Form1.textBox1.Invoke(() => Form1.textBox1.Text += (response + "\r\n"));
+                        int flag = 0;
+                        while (flag != 1)
+                        {
+                            if (port == 8080)
+                            {
+                                flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(response, MainSW);
+                            }
+                            else 
+                            {
+                                flag = OBSGL_DecodeLibrary.OBSGL_Decode.Decode(response);
+                            }
+                        }
+                    }
+                    if (NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag == 1 && NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag == 1)
+                    {
+                        Form1.MaindrawFlag = 1;
+                        while (Form1.MaindrawFlag != 0)
+                        {
+                            NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCflag = 0;
+                            NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTflag = 0;
+                        }
+
+                    }
+                    if (OBSGL_DecodeLibrary.OBSGL_Decode.OBSGLflag == 1) 
+                    {   
+                        Form1.SubdrawFlag = 1;
+                        while (Form1.SubdrawFlag != 0) 
+                        {
+                            OBSGL_DecodeLibrary.OBSGL_Decode.OBSGLflag = 0;
+                        }
+                    
+                    }
+                    await stream.WriteAsync(Encoding.ASCII.GetBytes("#")); //告訴發送端可以發送下一組數據
+                    await Task.Delay(10);
                 }
-                await stream.WriteAsync(Encoding.ASCII.GetBytes("#")); //告訴發送端可以發送下一組數據
-                Thread.Sleep(10);
             }
-
-            _client.Close();
+            catch (Exception ex)
+            {
+                Form1.textBox1.Invoke(() => Form1.textBox1.Text += ($"Error connecting to server on port {port}: {ex.Message}"));
+            }
+            finally
+            {
+                client.Close();
+            }           
         }
     }
 }

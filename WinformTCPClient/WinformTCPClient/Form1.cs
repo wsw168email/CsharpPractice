@@ -17,10 +17,11 @@ namespace WinformTCPClient
             f.Visible = true;
 
         }
-        public static int drawFlag;
+        public static int MaindrawFlag;
+        public static int SubdrawFlag;
         private async Task GetData()
         {
-            Client client1 = new Client("127.0.0.1", new int[] { 8080, 8081, 8082});
+            Client client1 = new Client("127.0.0.1", new int[] { 8080,8081});
             await client1.StartAsync();
         }
         private void ConnectButton_Click(object sender, EventArgs e)
