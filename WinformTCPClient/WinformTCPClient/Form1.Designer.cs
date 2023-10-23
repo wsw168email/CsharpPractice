@@ -31,6 +31,8 @@
             ConnectButton = new Button();
             textBox1 = new TextBox();
             ConnectShow = new Label();
+            UDPbutton = new RadioButton();
+            TCPbutton = new RadioButton();
             SuspendLayout();
             // 
             // ConnectButton
@@ -61,11 +63,37 @@
             ConnectShow.Size = new Size(0, 30);
             ConnectShow.TabIndex = 3;
             // 
+            // UDPbutton
+            // 
+            UDPbutton.AutoSize = true;
+            UDPbutton.Location = new Point(44, 636);
+            UDPbutton.Name = "UDPbutton";
+            UDPbutton.Size = new Size(160, 34);
+            UDPbutton.TabIndex = 4;
+            UDPbutton.TabStop = true;
+            UDPbutton.Text = "UDPmode";
+            UDPbutton.UseVisualStyleBackColor = true;
+            UDPbutton.CheckedChanged += UDPbutton_CheckedChanged;
+            // 
+            // TCPbutton
+            // 
+            TCPbutton.AutoSize = true;
+            TCPbutton.Location = new Point(44, 685);
+            TCPbutton.Name = "TCPbutton";
+            TCPbutton.Size = new Size(153, 34);
+            TCPbutton.TabIndex = 5;
+            TCPbutton.TabStop = true;
+            TCPbutton.Text = "TCPmode";
+            TCPbutton.UseVisualStyleBackColor = true;
+            TCPbutton.CheckedChanged += TCPbutton_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(14F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1574, 1129);
+            Controls.Add(TCPbutton);
+            Controls.Add(UDPbutton);
             Controls.Add(ConnectShow);
             Controls.Add(textBox1);
             Controls.Add(ConnectButton);
@@ -79,6 +107,8 @@
 
         private Button ConnectButton;
         private Label ConnectShow;
+        private RadioButton UDPbutton;
+        private RadioButton TCPbutton;
         public static TextBox textBox1;
     }
 }

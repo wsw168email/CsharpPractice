@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace WinformTCPClient
 {
-    class Client
+    class TcpClient
     {
         private string _serverIp;
         private int[] _serverPorts;
         StreamWriter MainSW = new StreamWriter("E:\\Practice\\WinformTCPClient\\MainDecode.txt");
         StreamWriter SubSW = new StreamWriter("E:\\Practice\\WinformTCPClient\\SubDecode.txt");
 
-        public Client(string serverIp, int[] serverPorts)
+        public TcpClient(string serverIp, int[] serverPorts)
         {
             _serverIp = serverIp;
             _serverPorts = serverPorts;
@@ -32,7 +32,7 @@ namespace WinformTCPClient
 
         public async Task ConnectAndCommunicateAsync(int port)
         {
-            TcpClient client = new TcpClient();
+            System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient();
             try
             {
                 await client.ConnectAsync(_serverIp, port);

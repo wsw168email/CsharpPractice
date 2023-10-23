@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace WinformTCPListener
 {
-    class Server
+    class TcpServer
     {
         private TcpListener[] _servers;
         StreamReader FileRead;
 
-        public Server(string ipAddress, int[] ports)
+        public TcpServer(string ipAddress, int[] ports)
         {
             _servers = new TcpListener[ports.Length];
             for (int i = 0; i < ports.Length; i++)

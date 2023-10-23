@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileSplitTest", "FileSplitTest\FileSplitTest.csproj", "{B716DED1-462B-4B8A-92CA-320BCE76F16B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B716DED1-462B-4B8A-92CA-320BCE76F16B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B716DED1-462B-4B8A-92CA-320BCE76F16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B716DED1-462B-4B8A-92CA-320BCE76F16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B716DED1-462B-4B8A-92CA-320BCE76F16B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {220207FF-916E-4E78-8284-514223DBA09D}
+	EndGlobalSection
+EndGlobal

@@ -52,12 +52,15 @@ namespace NEMA0183DecodeLibrary
                             sw.WriteLine(Starter);
                             break;
                         case 1:
-                            time = resultsubs[i];
-                            hour += Char.ToString(time[0]) + Char.ToString(time[1]);
-                            minute += Char.ToString(time[2]) + Char.ToString(time[3]);
-                            second += Char.ToString(time[4]) + Char.ToString(time[5]) + Char.ToString(time[6]) + Char.ToString(time[7]) + Char.ToString(time[8]);
-
-                            sw.WriteLine(hour + "時" + minute + "分" + second + "秒");
+                            if (resultsubs[i] != null) 
+                            {
+                                time = resultsubs[i];
+                                hour += Char.ToString(time[0]) + Char.ToString(time[1]);
+                                minute += Char.ToString(time[2]) + Char.ToString(time[3]);
+                                second += Char.ToString(time[4]) + Char.ToString(time[5]) + Char.ToString(time[6]) + Char.ToString(time[7]) + Char.ToString(time[8]);
+                                sw.WriteLine(hour + "時" + minute + "分" + second + "秒");
+                            }
+                            
                             break;
                         case 2:
                             latdegree = resultsubs[i];
@@ -205,12 +208,15 @@ namespace NEMA0183DecodeLibrary
                             sw.WriteLine(Starter);
                             break;
                         case 1:
-                            time = resultsubs[i];
-                            hour += Char.ToString(time[0]) + Char.ToString(time[1]);
-                            minute += Char.ToString(time[2]) + Char.ToString(time[3]);
-                            second += Char.ToString(time[4]) + Char.ToString(time[5]) + Char.ToString(time[6]) + Char.ToString(time[7]) + Char.ToString(time[8]);
- 
-                            sw.WriteLine(hour + "時" + minute + "分" + second + "秒");
+                            if (resultsubs[i] != null)
+                            {
+                                time = resultsubs[i];
+                                hour += Char.ToString(time[0]) + Char.ToString(time[1]);
+                                minute += Char.ToString(time[2]) + Char.ToString(time[3]);
+                                second += Char.ToString(time[4]) + Char.ToString(time[5]) + Char.ToString(time[6]) + Char.ToString(time[7]) + Char.ToString(time[8]);
+                                sw.WriteLine(hour + "時" + minute + "分" + second + "秒");
+                            }
+                                
                             break;
                         case 2:
                             if (resultsubs[i] == "V")
