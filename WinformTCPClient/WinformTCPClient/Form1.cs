@@ -25,19 +25,19 @@ namespace WinformTCPClient
             TcpClient client1 = new TcpClient("127.0.0.1", new int[] { 8080, 8081 });
             await client1.StartAsync();
         }
-        private async Task GetDataUDP() 
+        private async Task GetDataUDP()
         {
-            string serverIp = "127.0.0.1";
-            List<int> ports = new List<int> { 8080, 8081 }; // List of ports to communicate with
-            List<Task> clientTasks = new List<Task>();
-
-            foreach (int port in ports)
+            List<int> ports = new List<int> { 8080, 8081 }; // List of ports to listen on
+            Thread serverThread = new Thread(() =>
             {
-                UdpClientSet client = new UdpClientSet(serverIp, port);
-                clientTasks.Add(client.SendAndReceiveAsync($"Hello from port {port}!"));
-            }
+                Parallel.ForEach(ports, port =>
+                {
+                    UdpClientSet server = new UdpClientSet(port);
+                    server.SendAndReceiveAsync().Wait();
+                });
+            });
+            serverThread.Start();
 
-            await Task.WhenAll(clientTasks);
         }
         private void ConnectButton_Click(object sender, EventArgs e)
         {
@@ -49,11 +49,11 @@ namespace WinformTCPClient
             {
                 GetDataUDP();
             }
-            else 
+            else
             {
                 textBox1.Text += ("Please choose a mode! \r\n");
             }
-            
+
         }
 
 
@@ -70,12 +70,17 @@ namespace WinformTCPClient
 
         private void UDPbutton_CheckedChanged(object sender, EventArgs e)
         {
-            if (UDPbutton.Checked) 
+            if (UDPbutton.Checked)
             {
                 udpFlag = 1;
                 tcpFlag = 0;
                 textBox1.Text += ("UDP mode On! \r\n");
             }
+        }
+
+        private void StopButton_Click(object sender, EventArgs e)
+        {
+            Form2.sw.Close();
         }
     }
 }

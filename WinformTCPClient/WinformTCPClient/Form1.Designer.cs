@@ -33,6 +33,7 @@
             ConnectShow = new Label();
             UDPbutton = new RadioButton();
             TCPbutton = new RadioButton();
+            StopButton = new Button();
             SuspendLayout();
             // 
             // ConnectButton
@@ -87,11 +88,22 @@
             TCPbutton.UseVisualStyleBackColor = true;
             TCPbutton.CheckedChanged += TCPbutton_CheckedChanged;
             // 
+            // StopButton
+            // 
+            StopButton.Location = new Point(44, 940);
+            StopButton.Name = "StopButton";
+            StopButton.Size = new Size(150, 46);
+            StopButton.TabIndex = 6;
+            StopButton.Text = "Stop";
+            StopButton.UseVisualStyleBackColor = true;
+            StopButton.Click += StopButton_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(14F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1574, 1129);
+            Controls.Add(StopButton);
             Controls.Add(TCPbutton);
             Controls.Add(UDPbutton);
             Controls.Add(ConnectShow);
@@ -109,6 +121,7 @@
         private Label ConnectShow;
         private RadioButton UDPbutton;
         private RadioButton TCPbutton;
+        private Button StopButton;
         public static TextBox textBox1;
     }
 }

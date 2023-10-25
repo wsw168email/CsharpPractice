@@ -27,16 +27,18 @@ namespace WinformTCPListener
         }
         public async Task SendDataUDP() 
         {
-            List<int> ports = new List<int> { 8080,8081 }; // List of ports to listen on
-            List<Task> serverTasks = new List<Task>();
-            foreach (int port in ports)
+            string serverIp = "192.168.10.198";
+            List<int> ports = new List<int> { 8080, 8081 }; // List of ports to communicate with
+            Thread clientThread = new Thread(() =>
             {
-                UdpServer server = new UdpServer(port);
-                serverTasks.Add(server.StartAsync());
-            }
-
-            await Task.WhenAll(serverTasks);
-
+                Parallel.ForEach(ports, port =>
+                {
+                    UdpServer client = new UdpServer(serverIp, port);
+                    client.StartAsync($"Hello form {port}! \r\n").Wait();
+                });
+            });
+            clientThread.Start();
+            
         }
 
         private void ConnectButton_Click(object sender, EventArgs e)

@@ -50,15 +50,15 @@ namespace WinformTCPClient
         public static float[][] sDirection(float x, float y, float speedDirection)
         {
             float[][] resultoutput = MatrixCreate(1, 2);
-            resultoutput[0][0] = x + (float)(0.005 * Math.Cos((speedDirection / 365.0) * 2 * Math.PI));
-            resultoutput[0][1] = y + (float)(0.005 * Math.Sin((speedDirection / 365.0) * 2 * Math.PI));
+            resultoutput[0][0] = x + (float)(0.005 * Math.Cos((speedDirection / 360.0) * 2 * Math.PI));
+            resultoutput[0][1] = y + (float)(0.005 * Math.Sin((speedDirection / 360.0) * 2 * Math.PI));
             return resultoutput;
         }
         public static float[][] hDirection(float x, float y, float headingDirection)
         {
             float[][] resultoutput = MatrixCreate(1, 2);
-            resultoutput[0][0] = x + (float)(0.005 * Math.Cos(((headingDirection / 365.0) * 2 * Math.PI)));
-            resultoutput[0][1] = y + (float)(0.005 * Math.Sin(((headingDirection / 365.0) * 2 * Math.PI)));
+            resultoutput[0][0] = x + (float)(0.005 * Math.Cos(((headingDirection / 360.0) * 2 * Math.PI)));
+            resultoutput[0][1] = y + (float)(0.005 * Math.Sin(((headingDirection / 360.0) * 2 * Math.PI)));
             return resultoutput;
         }
         public static void LabelChange(double xbase, double ybase,float xminnow, float xmaxnow, float yminnow, float ymaxnow, float speedDirection, float headingDirection, float speed)

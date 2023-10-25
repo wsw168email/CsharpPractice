@@ -6,33 +6,32 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Forms;
 
 namespace WinformTCPListener
 {
     class UdpServer
     {
-        private readonly int _port;
         private UdpClient _udpClient;
         private IPEndPoint _clientEndpoint;
-        StreamReader FileRead ;
+        StreamReader FileRead;
 
-        public UdpServer(int port)
+        public UdpServer(string serverIp, int port)
         {
-            _port = port;
-            _udpClient = new UdpClient(_port);
-            _clientEndpoint = new IPEndPoint(IPAddress.Any, 0);
+            _udpClient = new UdpClient();
+            _clientEndpoint = new IPEndPoint(IPAddress.Parse(serverIp), port);
         }
+        
 
-        public async Task StartAsync()
+        public async Task StartAsync(string message)
         {            
             try
             {
-                // Receive data from the client
-                UdpReceiveResult result = await _udpClient.ReceiveAsync();
-                _clientEndpoint = result.RemoteEndPoint;
-                string message = Encoding.ASCII.GetString(result.Buffer);
-                Form1.textBox1.Invoke(() => Form1.textBox1.Text += ($"Received on port {_port} from {result.RemoteEndPoint}: {message} \r\n"));
-                if (_port == 8080)
+                // Send data to the client
+                byte[] messageBytes = Encoding.ASCII.GetBytes(message);
+                await _udpClient.SendAsync(messageBytes, messageBytes.Length, _clientEndpoint);
+                Form1.textBox1.Invoke(() => Form1.textBox1.Text += ($"Sent to {_clientEndpoint}: {message} \r\n"));
+                if (_clientEndpoint.Port ==  8080)
                 {
                     FileRead = new StreamReader("E:\\Practice\\WinformTCPListener\\Mainsample.txt");
                 }
@@ -49,9 +48,9 @@ namespace WinformTCPListener
                     var dateTimeBytes = Encoding.ASCII.GetBytes(s);
                     await _udpClient.SendAsync(dateTimeBytes, dateTimeBytes.Length, _clientEndpoint);
                     Thread.Sleep(10);
-                    Form1.textBox1.Invoke(() => Form1.textBox1.Text += (s + $" From {_port}\r\n"));
+                    //Form1.textBox1.Invoke(() => Form1.textBox1.Text += (s + $" From {_port}\r\n"));
                     s = FileRead.ReadLine();
-                    if (_port == 8080)
+                    if (_clientEndpoint.Port == 8080)
                     {
                         Thread.Sleep(100);
                     }
@@ -60,11 +59,13 @@ namespace WinformTCPListener
                         Thread.Sleep(500);
                     }
                 }
-                Form1.textBox1.Text += ($" {_port} Stream Complete! \r\n");                              
+                Form1.textBox1.Invoke(()=>Form1.textBox1.Text += ($" {_clientEndpoint.Port} Stream Complete! \r\n"));
+                var EndTimeBytes = Encoding.ASCII.GetBytes("@");
+                await _udpClient.SendAsync(EndTimeBytes,EndTimeBytes.Length,_clientEndpoint);//告訴接收端可以結束了
             }
             catch (Exception ex)
             {
-                Form1.textBox1.Text += ($"Error on port {_port}: {ex.Message} \r\n");
+                Form1.textBox1.Invoke(()=>Form1.textBox1.Text += ($"Error on port {_clientEndpoint.Port}: {ex.Message} \r\n"));
                 await Task.Delay(1000); // Wait for a second before trying again
             }
         }

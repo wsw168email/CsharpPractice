@@ -36,13 +36,13 @@ namespace WinformTCPClient
         //計算座標相關參數開始
         float formHeight;
         float formWidth;
-        float xmin = (float)0.2;
-        float xmax = (float)0.4;
-        float ymin = (float)0.2;
-        float ymax = (float)0.4;
+        float xmin = (float)-2000;
+        float xmax = (float)2000;
+        float ymin = (float)-2000;
+        float ymax = (float)2000;
         float xminnow, xmaxnow, yminnow, ymaxnow;
-        double xbase = 177698;
-        double ybase = 2500798;
+        double xbase = 177856.2331;
+        double ybase = 2494369.982;
         float xcenter, ycenter;
         float ZoomRatio = 1.0f;
         private int xPos;
@@ -88,7 +88,8 @@ namespace WinformTCPClient
         float[][] subresultDirection = DrawShip.MatrixCreate(1, 2);
         int subflag = 0;
         //障礙船資料儲存結束
-
+        public static StreamWriter sw = new StreamWriter("E:\\Practice\\WinformTCPClient\\SpeedAndHeading.csv");
+        int firstData = 1;
 
         public Form2()
         {
@@ -109,7 +110,7 @@ namespace WinformTCPClient
             _GraphicsSub = Graphics.FromImage(_imageSub);
             mypen = new Pen(Color.Red, 3);
             dotpen = new Pen(Color.Gray);//畫筆
-            Subpen = new Pen(Color.Orange, 3);
+            Subpen = new Pen(Color.Blue,10);
             dotpen.DashPattern = new float[] { 10.0F, 2.0F };
             Sdirectionpen = new Pen(Color.Blue, 3);
             Hdirectionpen = new Pen(Color.Green, 3);
@@ -133,13 +134,21 @@ namespace WinformTCPClient
         {
             while (true)
             {
+                
                 if (Form1.MaindrawFlag == 1)
                 {
-                    dataChange[endflag].lat = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.lat - xbase;
-                    dataChange[endflag].lon = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.lon - ybase;
-                    dataChange[endflag].speed = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.speed;
-                    dataChange[endflag].speedDirection = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.sDirection;
-                    dataChange[endflag].headingDirection = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT.hDirection;
+                    if (firstData == 1 && NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].lat !=0 )
+                    {
+                        firstData = 0;
+                        xbase = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].lat;
+                        ybase = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].lon;
+                    }
+                    dataChange[endflag].lat = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].lat - xbase;
+                    dataChange[endflag].lon = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].lon - ybase;
+                    dataChange[endflag].speed = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].speed;
+                    dataChange[endflag].speedDirection = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].sDirection;
+                    dataChange[endflag].headingDirection = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.DT[NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag].hDirection;
+                    
                     endflag++;
                     if (endflag == dataChange.Length)
                     {
@@ -154,36 +163,49 @@ namespace WinformTCPClient
                         startflag = 0;
                     }
                     Form1.MaindrawFlag = 0;
+                    NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.HDTstartFlag++;
+                    NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.RMCstartFlag++;
                     shipflag = 1;
                 }
             }
         }
-        private void SubDataReceive() 
+        private void SubDataReceive()
         {
-            while (true) 
+            while (true)
             {
-                if (Form1.SubdrawFlag == 1) 
+                if (Form1.SubdrawFlag == 1)
                 {
-                    TransferALL(OBSGL_Decode.obj,objDraw);
+                    objDraw.Clear();
+                    TransferALL(OBSGL_Decode.obj, objDraw);
                     Form1.SubdrawFlag = 0;
                     subflag = 1;
+                    OBSGL_Decode.obj.Clear();
                 }
             }
         }
-        private void TransferALL(List<OBSGL_Decode.ObjectionData> fromList, List<OBSGL_Decode.ObjectionData> toList) 
+        private void TransferALL(List<OBSGL_Decode.ObjectionData> fromList, List<OBSGL_Decode.ObjectionData> toList)
         {
             toList.AddRange(fromList);
         }
         public void ShipGenerate()
         {
-            drawflag = endflag-1;
-            if (drawflag > 0 && shipflag == 1) 
+            drawflag = endflag - 1;
+            if (drawflag > 0 && shipflag == 1)
             {
                 xx = (float)dataChange[drawflag].lat;
                 yy = (float)dataChange[drawflag].lon;
                 speed = (float)dataChange[drawflag].speed;
-                speedDirection = (float)dataChange[drawflag].speedDirection;
-                headingDirection = (float)dataChange[drawflag].headingDirection;
+                speedDirection = -1f*((float)dataChange[drawflag].speedDirection)+90f;
+                headingDirection = -1f*((float)dataChange[drawflag].headingDirection)+90f;
+                if (speedDirection<0) 
+                {
+                    speedDirection += 360;
+                }
+                if (headingDirection<0) 
+                {
+                    headingDirection += 360;
+                }
+                CPA_TCPAcount();
                 result = DrawShip.sDirection(xx, yy, speedDirection);
                 resultDirection = DrawShip.CT(result[0][0], result[0][1], xminnow, xmaxnow, yminnow, ymaxnow, formWidth, formHeight);
                 sXX = resultDirection[0][0];
@@ -205,8 +227,9 @@ namespace WinformTCPClient
                 graphics.DrawImage(_image, new Point(0, 0));
                 grachicsDirection.DrawImage(_imageDirection, new Point(0, 0));
                 shipflag = 0;
+                
             }
-            
+
         }
         public void ShipRegenerate()
         {
@@ -231,15 +254,15 @@ namespace WinformTCPClient
             }
             graphics.DrawImage(_image, new Point(0, 0));
         }
-        private void SubGenerate() 
+        private void SubGenerate()
         {
-            if (subflag == 1) 
+            if (subflag == 1 && firstData == 0)
             {
                 _GraphicsSub.Clear(Color.FromArgb(0, 255, 255, 255));
                 foreach (OBSGL_Decode.ObjectionData objectionData in objDraw)
                 {
-                    subxx = (float)(objectionData.xX + 177856.2331 - xbase);
-                    subyy = (float)(objectionData.yY + 2494369.982 - ybase);
+                    subxx = (float)((objectionData.xX) + 177856.2331f - (float)xbase);
+                    subyy = (float)((objectionData.yY) + 2494369.982f - (float)ybase);
                     result = DrawShip.CT(subxx, subyy, xminnow, xmaxnow, yminnow, ymaxnow, formWidth, formHeight);
                     subxx = result[0][0];
                     subyy = result[0][1];
@@ -248,7 +271,60 @@ namespace WinformTCPClient
                 grachicsSub.DrawImage(_imageSub, new Point(0, 0));
                 subflag = 0;
             }
-            
+
+        }
+        static (double CPA, double TCPA) CalculateCPAandTCPA(Ship ship1, Ship ship2)
+        {
+            // Convert courses from degrees to radians
+            double course1Rad = ship1.Course * Math.PI / 180;
+            double course2Rad = ship2.Course * Math.PI / 180;
+
+            // Calculate velocity components for each ship
+            double vx1 = ship1.Speed * Math.Cos(course1Rad);
+            double vy1 = ship1.Speed * Math.Sin(course1Rad);
+            double vx2 = ship2.Speed * Math.Cos(course2Rad);
+            double vy2 = ship2.Speed * Math.Sin(course2Rad);
+
+            // Calculate relative velocity
+            double vx = vx2 - vx1;
+            double vy = vy2 - vy1;
+
+            // Calculate relative position
+            double dx = ship2.X - ship1.X;
+            double dy = ship2.Y - ship1.Y;
+
+            // Calculate time to CPA
+            double tcpa = -(dx * vx + dy * vy) / (vx * vx + vy * vy);
+
+            // Calculate positions of ships at CPA
+            double x1 = ship1.X + vx1 * tcpa;
+            double y1 = ship1.Y + vy1 * tcpa;
+            double x2 = ship2.X + vx2 * tcpa;
+            double y2 = ship2.Y + vy2 * tcpa;
+
+            // Calculate CPA
+            double cpa = Math.Sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+
+            return (cpa, tcpa);
+        }
+        private void CPA_TCPAcount() 
+        {
+            if ( objDraw != null ) 
+            {
+                textBox1.Text = null;
+                sw.Write($"{xx},{yy},{speedDirection},{headingDirection}");
+                foreach (OBSGL_Decode.ObjectionData obj in objDraw) 
+                {
+                    float v = (float)Math.Sqrt(Math.Pow(obj.sX,2)+Math.Pow(obj.sY,2));
+                    float anglev =  (float)Math.Atan2(obj.sY,obj.sX)+headingDirection;
+                    Ship ship1 = new Ship(xx, yy, 0, headingDirection);
+                    Ship ship2 = new Ship((obj.xX-(float)xbase), (obj.yY-(float)ybase),v, anglev);
+                    var (cpa, tcpa) = CalculateCPAandTCPA(ship1, ship2);
+                    textBox1.Text += ($"ID: {obj.ID}, DCPA:{cpa.ToString("#0.000")} meter, TCPA:{tcpa.ToString("#0.000")} seconds. \r\n");
+                    sw.Write($"{obj.ID},{(obj.xX - (float)xbase)},{(obj.yY - (float)ybase)},{v},{anglev},{cpa},{tcpa}");
+                }
+                sw.Write("\n");
+            }
         }
 
         private void ReceiveButton_Click(object sender, EventArgs e)
@@ -286,34 +362,26 @@ namespace WinformTCPClient
 
         private void ZoomInButton_Click(object sender, EventArgs e)
         {
-            if (ZoomRatio < 1.5)
-            {
-                timer1.Enabled = false;
-                ZoomRatio += 0.1f;
-                xminnow = xcenter - (xcenter - xmin) / ZoomRatio;
-                xmaxnow = xcenter + (xmax - xcenter) / ZoomRatio;
-                yminnow = ycenter - (ycenter - ymin) / ZoomRatio;
-                ymaxnow = ycenter + (ymax - ycenter) / ZoomRatio;
-                ShipRegenerate();
-                timer1.Enabled = true;
-
-            }
+            timer1.Enabled = false;
+            ZoomRatio += 0.5f;
+            xminnow = xcenter - (xcenter - xmin) / ZoomRatio;
+            xmaxnow = xcenter + (xmax - xcenter) / ZoomRatio;
+            yminnow = ycenter - (ycenter - ymin) / ZoomRatio;
+            ymaxnow = ycenter + (ymax - ycenter) / ZoomRatio;
+            ShipRegenerate();
+            timer1.Enabled = true;
         }
 
         private void ZoomOutButton_Click(object sender, EventArgs e)
         {
-            if (ZoomRatio > 0.5)
-            {
-                timer1.Enabled = false;
-                ZoomRatio -= 0.1f;
-                xminnow = xcenter - (xcenter - xmin) / ZoomRatio;
-                xmaxnow = xcenter + (xmax - xcenter) / ZoomRatio;
-                yminnow = ycenter - (ycenter - ymin) / ZoomRatio;
-                ymaxnow = ycenter + (ymax - ycenter) / ZoomRatio;
-                ShipRegenerate();
-                timer1.Enabled = true;
-
-            }
+            timer1.Enabled = false;
+            ZoomRatio -= 0.5f;
+            xminnow = xcenter - (xcenter - xmin) / ZoomRatio;
+            xmaxnow = xcenter + (xmax - xcenter) / ZoomRatio;
+            yminnow = ycenter - (ycenter - ymin) / ZoomRatio;
+            ymaxnow = ycenter + (ymax - ycenter) / ZoomRatio;
+            ShipRegenerate();
+            timer1.Enabled = true;
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
@@ -321,10 +389,12 @@ namespace WinformTCPClient
             if (e.Button == MouseButtons.Left || e.Button == MouseButtons.Right)
             {
                 timer1.Enabled = false;
-                xminnow -= (e.X - xPos) * 0.0005f;
-                xmaxnow -= (e.X - xPos) * 0.0005f;
-                yminnow += (e.Y - yPos) * 0.0005f;
-                ymaxnow += (e.Y - yPos) * 0.0005f;
+                xminnow -= (e.X - xPos) * 1f;
+                xmaxnow -= (e.X - xPos) * 1f;
+                yminnow += (e.Y - yPos) * 1f;
+                ymaxnow += (e.Y - yPos) * 1f;
+                xcenter -= (e.X - xPos) * 1f;
+                ycenter += (e.Y - yPos) * 1f;
                 ShipRegenerate();
                 timer1.Enabled = true;
                 Thread.Sleep(100);

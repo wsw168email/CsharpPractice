@@ -49,12 +49,12 @@ namespace WinformTCPListener
                 if (((IPEndPoint)server.LocalEndpoint).Port == 8080)
                 {
                     //填寫檔案位置
-                    FileRead = new StreamReader("E:\\Practice\\WinformTCPListener\\sample.txt");
+                    FileRead = new StreamReader("E:\\Practice\\WinformTCPListener\\Mainsample.txt");
                 }
                 else 
                 {
                     //填寫檔案位置
-                    FileRead = new StreamReader("E:\\Practice\\WinformTCPListener\\sample2.txt");
+                    FileRead = new StreamReader("E:\\Practice\\WinformTCPListener\\Subsample.txt");
                 }
                 HandleClientAsync(client, FileRead);
             }

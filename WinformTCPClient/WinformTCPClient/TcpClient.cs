@@ -74,7 +74,7 @@ namespace WinformTCPClient
                         {
                             if (port == 8080)
                             {
-                                flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(response, MainSW);
+                                flag = NEMA0183DecodeLibrary.NEMA0183DecodeLibrary.Decode(response);
                             }
                             else 
                             {

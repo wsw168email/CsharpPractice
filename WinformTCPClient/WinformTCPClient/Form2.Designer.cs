@@ -59,6 +59,7 @@
             labelY8 = new Label();
             labelY9 = new Label();
             timer1 = new System.Windows.Forms.Timer(components);
+            textBox1 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -313,11 +314,21 @@
             timer1.Interval = 5;
             timer1.Tick += timer1_Tick;
             // 
+            // textBox1
+            // 
+            textBox1.Location = new Point(1256, 0);
+            textBox1.Multiline = true;
+            textBox1.Name = "textBox1";
+            textBox1.ScrollBars = ScrollBars.Vertical;
+            textBox1.Size = new Size(519, 1000);
+            textBox1.TabIndex = 29;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(14F, 30F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1274, 1429);
+            ClientSize = new Size(1774, 1429);
+            Controls.Add(textBox1);
             Controls.Add(labelY9);
             Controls.Add(labelY8);
             Controls.Add(labelY7);
@@ -363,6 +374,7 @@
         private Button ZoomInButton;
         private Button ZoomOutButton;
         private System.Windows.Forms.Timer timer1;
+        private TextBox textBox1;
         public static Label SDirectionShow;
         public static Label HDirectionShow;
         public static Label SpeedShow;

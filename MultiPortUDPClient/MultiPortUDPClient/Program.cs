@@ -6,31 +6,41 @@ using System.Threading.Tasks;
 
 class UdpClientExample
 {
+    private readonly int _port;
     private UdpClient _udpClient;
     private IPEndPoint _serverEndpoint;
 
-    public UdpClientExample(string serverIp, int port)
+    public UdpClientExample(int port)
     {
-        _udpClient = new UdpClient();
-        _serverEndpoint = new IPEndPoint(IPAddress.Parse(serverIp), port);
+        _port = port;
+        _udpClient = new UdpClient(_port);
+        _serverEndpoint = new IPEndPoint(IPAddress.Any, 0);
     }
 
-    public async Task SendAndReceiveAsync(string message)
+    public async Task StartAsync()
     {
-        
-        // Send data to the server
-        byte[] messageBytes = Encoding.ASCII.GetBytes(message);
-        await _udpClient.SendAsync(messageBytes, messageBytes.Length, _serverEndpoint);
-        Console.WriteLine($"Sent to {_serverEndpoint}: {message}");
+        Console.WriteLine($"Client is running on port {_port}...");
+
         while (true)
         {
-            // Receive data from the server
-            UdpReceiveResult result = await _udpClient.ReceiveAsync();
-            string response = Encoding.ASCII.GetString(result.Buffer);
-            Console.WriteLine(response);
+            try
+            {
+                // Receive data from the client
+                UdpReceiveResult result = await _udpClient.ReceiveAsync();
+                _serverEndpoint = result.RemoteEndPoint;
+                string message = Encoding.ASCII.GetString(result.Buffer);
+                Console.WriteLine($"Received on port {_port} from {result.RemoteEndPoint}: {message}");
+                // Send a response to the client
+                byte[] responseBytes = Encoding.ASCII.GetBytes($"Hello from port {_port}!");
+                await _udpClient.SendAsync(responseBytes, responseBytes.Length, _serverEndpoint);
+                Console.WriteLine($"Sent to {_serverEndpoint}: Hello from port {_port}!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error on port {_port}: {ex.Message}");
+                await Task.Delay(1000); // Wait for a second before trying again
+            }
         }
-        
-       
     }
 }
 
@@ -38,14 +48,13 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        string serverIp = "127.0.0.1";
-        List<int> ports = new List<int> { 8080,8081 }; // List of ports to communicate with
+        List<int> ports = new List<int> { 8080, 8081 }; // List of ports to listen on
         List<Task> clientTasks = new List<Task>();
 
         foreach (int port in ports)
         {
-            UdpClientExample client = new UdpClientExample(serverIp, port);
-            clientTasks.Add(client.SendAndReceiveAsync($"Hello from port {port}!"));
+            UdpClientExample client = new UdpClientExample(port);
+            clientTasks.Add(client.StartAsync());
         }
 
         await Task.WhenAll(clientTasks);
